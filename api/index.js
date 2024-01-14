@@ -11,7 +11,7 @@ config();
 const lookMarketPriceApi = async ({ symbol, status, floatPrice, amplitude, percentage, price }) => {
 
     axios({
-        url: `https://oapi.dingtalk.com/robot/send?access_token=${process.env.BTC_ETH_DINGDING_BOT_ACCESS_TOKEN}&timestamp=${Date.now()}&secret=${process.env.CHE_DINGDING_BOT_SECRET}`,
+        url: `https://oapi.dingtalk.com/robot/send?access_token=${process.env.DINGDING_MARKET_BOT}&timestamp=${Date.now()}&secret=${process.env.CHE_DINGDING_BOT_SECRET}`,
         method: "POST",
         headers: {
             "Content-Type": "application/json"
