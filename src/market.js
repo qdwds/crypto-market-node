@@ -46,7 +46,8 @@ class MarketPrice {
                                 price: newSymbols[symbol].last    //  // 现在价格
                             }
 
-                            lookMarketPriceApi(data)
+                            lookMarketPriceApi(data);
+                            log.info(`${symbol} 行情推送！`)
                         }
                     }
 
@@ -66,7 +67,7 @@ class MarketPrice {
     async watchTicker(cex ,symbol, ratio) {
         const exchange = new pro[cex]()
 
-        log.info(`${this.cex}交易所【${symbol}】开始监控价格波动!`);
+        log.info(`${cex}交易所【${symbol}】开始监控价格波动!`);
 
         while (true) {
             try {
@@ -96,6 +97,7 @@ class MarketPrice {
                             }
                             
                             lookMarketPriceApi(data)
+                            log.info(`${symbol} 行情推送！`)
                         }
 
                 }
