@@ -103,7 +103,7 @@ class MarketPrice {
                 }
                 this.oldSymbol = newSymbol;
             } catch (error) {
-                log.error(`${this.cex} ${error}`)
+                log.error(`${cex} ${symbol} ${error}`)
             }
         }
         

@@ -6,11 +6,16 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
+  "scripts": {
+    "start": "pm2 start main.js --watch",
+    "restart": "pm2 start main.js --watch"
+  },
   "dependencies": {
     "@types/node": "^20.3.0",
     "axios": "^1.4.0",
-    "ccxt": "^3.1.34",
+    "ccxt": "^4.2.14",
     "dotenv": "^16.1.4",
+    "ethers": "^6.10.0",
     "moment-timezone": "^0.5.44",
     "winston": "^3.11.0",
     "winston-daily-rotate-file": "^4.7.1"

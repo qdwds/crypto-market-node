@@ -33,9 +33,42 @@ const lookMarketPriceApi = async ({ symbol, status, floatPrice, amplitude, perce
             log.error(err)
         })
 }
-
+/**
+ * 区块链上 钱包地址变动 推送到钉钉
+ * @param {*} address 
+ */
+const blockChainDingApi = async ({symbol, user, type, amount}) => {
+    try {
+       await axios({
+            url: `https://oapi.dingtalk.com/robot/send?access_token=${process.env.BLOCKCHAIN_DING_TOKEN}`,
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            data: {
+                "msgtype": "text",
+                "text": {
+                    "content": 
+                        symbol + "：监控地址变动通知!!!\n" + 
+                        "用户：" + user + "\n" + 
+                        "类型：" + type + "\n" + 
+                        "额度：" + amount + "\n" 
+       
+                      
+                },
+                "at":{
+                    "isAtAll": true
+                }
+            }
+        })
+        
+    } catch (error) {
+        log.error(`钉钉接口错误：${error}`)
+    }
+}
 
 
 module.exports = {
-    lookMarketPriceApi
+    lookMarketPriceApi,
+    blockChainDingApi
 }

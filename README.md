@@ -24,6 +24,7 @@ new MarketPrice().watchTickers(
 + 修改`.env.template`文件为`.env`。
 + 添加[钉钉群机器人](https://open.dingtalk.com/document/robots/custom-robot-access)，把自己的ID输入到`DINGDING_MARKET_BOT`后面。
 ## 部署 
-```
-pm2 start main.js
+启动命令使用`nodejs`中的[pm2](https://www.npmjs.com/package/pm2)来管理服务。
+```sh
+pm2 start main.js --name markets
 ```
