@@ -2,7 +2,7 @@
 
 const { Contract, WebSocketProvider, formatUnits, JsonRpcProvider } = require('ethers');
 const { log } = require("../lib/logger")
-const { blockChainDingApi } = require("../api/index")
+const { AddressMonitoringApi } = require("../api/index")
 
 
 
@@ -14,7 +14,6 @@ const { blockChainDingApi } = require("../api/index")
 class Erc20 {
 
     static provider = null;
-
 
     constructor(url) {
         if (url.includes("wss")) {
@@ -35,22 +34,20 @@ class Erc20 {
         log.info(`开始监控 ${token.symbol} Transfer 事件.`);
         const contract = new Contract(token.contract, ['event Transfer(address indexed from, address indexed to, uint256 value)'], this.provider);
 
-        
-        contract.on("Transfer", (from, to, amount, event) => {
-            console.log(from, to,amount);
+        contract.on("Transfer", async (from, to, amount, event) => {
             for (const ls of token.list) {
                 // 转入 转出 监控
                 if (from == ls.address) {
-                    blockChainDingApi({
+                    AddressMonitoringApi({
                         symbol: token.symbol,
-                        user: ls.user,
+                        name: ls.name,
                         type: "转出",
                         amount: formatUnits(amount).replace(/(\.\d{2})\d*$/, '$1'),
                     })
                 } else if (to == ls.address) {
-                    blockChainDingApi({
+                    AddressMonitoringApi({
                         symbol: token.symbol,
-                        user: ls.user,
+                        name: ls.name,
                         type: "转入",
                         amount: formatUnits(amount).replace(/(\.\d{2})\d*$/, '$1'),
                     })

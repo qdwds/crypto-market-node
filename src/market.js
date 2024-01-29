@@ -1,20 +1,20 @@
 const { pro } = require("ccxt");
-const { lookMarketPriceApi } = require("../api/index");
+const { marketPriceApi } = require("../api/index");
 const { log } = require("../lib/logger")
 
 class MarketPrice {
-    
+
     oldSymbols = {};
     oldSymbol = {};
 
-    constructor() {}
+    constructor() { }
 
-   /**
-    * 监控多个价格波动
-    * @param {*} tokens {"BTC/USDT": 1"} 
-    */
+    /**
+     * 监控多个价格波动
+     * @param {*} tokens {"BTC/USDT": 1"} 
+     */
     async watchTickers(cex, tokens) {
-   
+
         const exchange = new pro[cex]()
 
         log.info(`${cex}交易所【${Object.keys(tokens)}】开始监控价格波动!`);
@@ -46,7 +46,7 @@ class MarketPrice {
                                 price: newSymbols[symbol].last    //  // 现在价格
                             }
 
-                            lookMarketPriceApi(data);
+                            marketPriceApi(data);
                             log.info(`${symbol} 行情推送！`)
                         }
                     }
@@ -64,7 +64,7 @@ class MarketPrice {
      * @param {*} symbol 监控代币符号
      * @param {*} ratio 波动率(百分比)
      */
-    async watchTicker(cex ,symbol, ratio) {
+    async watchTicker(cex, symbol, ratio) {
         const exchange = new pro[cex]()
 
         log.info(`${cex}交易所【${symbol}】开始监控价格波动!`);
@@ -76,29 +76,29 @@ class MarketPrice {
 
                 if (Object.keys(this.oldSymbol).length > 0) {
 
-                        // 这笔交易的波动率
-                        let amplitude = (1 - this.oldSymbol.last / newSymbol.last) * 100;
+                    // 这笔交易的波动率
+                    let amplitude = (1 - this.oldSymbol.last / newSymbol.last) * 100;
 
-                        if (amplitude >= ratio || amplitude <= -ratio) {
+                    if (amplitude >= ratio || amplitude <= -ratio) {
 
-                            // 24小时波动
-                            const percentage = newSymbol.percentage.toFixed(2);
+                        // 24小时波动
+                        const percentage = newSymbol.percentage.toFixed(2);
 
-                            // 波动价格
-                            const floatPrice = amplitude * this.oldSymbol.last
+                        // 波动价格
+                        const floatPrice = amplitude * this.oldSymbol.last
 
-                            const data = {
-                                symbol: symbol,  //  代币符号
-                                status: newSymbol.last > this.oldSymbol.last ? "上涨" : "下跌",
-                                amplitude: amplitude.toFixed(2),    //  瞬时波动率（单笔交易）
-                                floatPrice: floatPrice.toFixed(2),  //  波动价格
-                                percentage, //  24小时涨幅
-                                price: newSymbol.last    //  // 现在价格
-                            }
-                            
-                            lookMarketPriceApi(data)
-                            log.info(`${symbol} 行情推送！`)
+                        const data = {
+                            symbol: symbol,  //  代币符号
+                            status: newSymbol.last > this.oldSymbol.last ? "上涨" : "下跌",
+                            amplitude: amplitude.toFixed(2),    //  瞬时波动率（单笔交易）
+                            floatPrice: floatPrice.toFixed(2),  //  波动价格
+                            percentage, //  24小时涨幅
+                            price: newSymbol.last    //  // 现在价格
                         }
+
+                        marketPriceApi(data)
+                        log.info(`${symbol} 行情推送！`)
+                    }
 
                 }
                 this.oldSymbol = newSymbol;
@@ -106,7 +106,7 @@ class MarketPrice {
                 log.error(`${cex} ${symbol} ${error}`)
             }
         }
-        
+
     }
 }
 module.exports = {
